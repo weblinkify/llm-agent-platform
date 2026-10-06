@@ -7,10 +7,7 @@ settings = get_settings()
 
 app = FastAPI(
     title=settings.app_name,
-    description=(
-        "Enterprise Agentic AI platform for telecommunications "
-        "operations."
-    ),
+    description=("Enterprise Agentic AI platform for telecommunications operations."),
     version="0.1.0",
 )
 

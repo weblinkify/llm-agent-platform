@@ -19,9 +19,7 @@ class Settings(BaseSettings):
     azure_openai_chat_deployment: str = ""
     azure_openai_embedding_deployment: str = ""
 
-    database_url: str = (
-        "postgresql+asyncpg://postgres:postgres@localhost:5432/telco_ai"
-    )
+    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/telco_ai"
 
     redis_url: str = "redis://localhost:6379/0"
 
