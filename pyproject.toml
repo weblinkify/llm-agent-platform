@@ -1,124 +1,40 @@
-[build-system]
-requires = ["setuptools>=75", "wheel"]
-build-backend = "setuptools.build_meta"
-
-
 [project]
 name = "telco-ai-operations-assistant"
 version = "0.1.0"
-description = "Enterprise AI operations assistant for telecom support and operations"
-readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "MIT" }
 
 dependencies = [
-    # API
-    "fastapi>=0.115",
-    "uvicorn[standard]>=0.34",
-    "pydantic>=2.10",
-    "pydantic-settings>=2.7",
-
-    # LLM / Agentic AI
-    "openai>=1.60",
-    "langchain>=0.3",
-    "langchain-openai>=0.3",
-    "langgraph>=0.2",
-    "mcp>=1.0",
-
-    # Database / Cache
-    "sqlalchemy>=2.0",
-    "asyncpg>=0.30",
-    "redis>=5.2",
-
-    # HTTP
-    "httpx>=0.28",
-
-    # Observability
-    "opentelemetry-api>=1.29",
-    "opentelemetry-sdk>=1.29",
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "langchain",
+    "langchain-openai",
+    "langgraph",
+    "python-dotenv",
 ]
-
 
 [project.optional-dependencies]
 dev = [
-    # Testing
-    "pytest>=8.3",
-    "pytest-asyncio>=0.25",
-    "pytest-cov>=6.0",
-
-    # Code quality
-    "ruff>=0.9",
-    "mypy>=1.14",
-    "pre-commit>=4.0",
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
+    "mypy",
 ]
 
+[tool.ruff]
+line-length = 88
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
 
 [tool.setuptools.packages.find]
 include = [
-    "apps*",
     "agents*",
+    "apps*",
     "rag*",
-    "tools*",
+    "prompts*",
 ]
-
 exclude = [
     "infrastructure*",
     "tests*",
-]
-
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = ["."]
-addopts = "-ra"
-
-
-[tool.ruff]
-line-length = 100
-target-version = "py312"
-
-exclude = [
-    ".git",
-    ".venv",
-    "venv",
-    "build",
-    "dist",
-    ".terraform",
-]
-
-
-[tool.ruff.lint]
-select = [
-    "E",   # pycodestyle
-    "W",   # pycodestyle warnings
-    "F",   # pyflakes
-    "I",   # import sorting
-    "B",   # bugbear
-    "UP",  # pyupgrade
-    "SIM", # simplify
-    "C4",  # comprehensions
-    "T20", # print statements
-]
-
-ignore = [
-    "E501", # handled by Ruff formatter
-]
-
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-line-ending = "lf"
-skip-magic-trailing-comma = false
-
-
-[tool.mypy]
-python_version = "3.12"
-strict = true
-ignore_missing_imports = true
-
-exclude = [
-    "^\\.venv/",
-    "^build/",
-    "^dist/",
 ]
