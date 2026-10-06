@@ -23,6 +23,7 @@ async def root():
     return {
         "status": "ok",
         "service": "Telco AI Operations Assistant",
+        "version": "0.1.0",
     }
 
 
@@ -33,7 +34,7 @@ async def health():
     }
 
 
-@app.get("/readiness")
+@app.get("/ready")
 async def readiness():
     return {
         "status": "ready",
