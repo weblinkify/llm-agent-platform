@@ -1130,6 +1130,374 @@ The goal is not to build another simple chatbot.
 
 The goal is to demonstrate how an AI Engineer can design, develop, secure, test, deploy and operate an enterprise-grade AI platform.
 
+
+
+
+---
+
+
+# Demo Testing
+
+The current draft includes a **mock LLM mode** so the platform can be tested locally without Azure OpenAI credentials.
+
+This allows the Product Owner to validate:
+
+* API functionality
+* Agent routing
+* LangGraph orchestration
+* Knowledge/RAG retrieval
+* Customer troubleshooting
+* Incident investigation
+* Action workflows
+* Structured API responses
+
+> **Note:** The current draft uses synthetic data and a mock LLM. Azure OpenAI is not required for the demo test scenarios below.
+
+---
+
+## Start the Application
+
+Create and activate the Python virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the API:
+
+```bash
+uvicorn apps.api.main:app --reload --port 8000
+```
+
+Open the Swagger UI:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+## Test the Chat API
+
+In Swagger:
+
+1. Open `POST /chat`
+2. Click **Try it out**
+3. Enter one of the test requests below
+4. Click **Execute**
+5. Review the returned JSON response
+
+---
+
+## Test 1 — Network Incident Investigation
+
+### User request
+
+```json
+{
+  "message": "Are there any active network incidents affecting Helsinki?"
+}
+```
+
+### Expected behaviour
+
+```text
+Supervisor
+    ↓
+Incident Agent
+    ↓
+Network / Incident Data
+    ↓
+Incident Summary
+```
+
+### Expected result
+
+The response should identify the active Helsinki network incident.
+
+Example:
+
+```json
+{
+  "answer": "There are 1 active incident(s) affecting Helsinki. Network status: DEGRADED.",
+  "requires_approval": false,
+  "customer": null,
+  "incident": {
+    "network": {
+      "location": "Helsinki",
+      "status": "DEGRADED"
+    }
+  }
+}
+```
+
+The current synthetic test data contains:
+
+```text
+Incident ID: INC-1003
+Title: 5G service degradation
+Status: ACTIVE
+Severity: P1
+Location: Helsinki
+```
+
+### Validation
+
+The test passes if:
+
+* [x] Request is accepted by the API
+* [x] Supervisor routes to the Incident Agent
+* [x] Helsinki network status is returned
+* [x] Active incident is identified
+* [x] Incident ID is returned
+* [x] No approval is required for read-only investigation
+
+---
+
+## Test 2 — Knowledge / RAG
+
+### User request
+
+```json
+{
+  "message": "What is the SLA for a Priority 1 network incident?"
+}
+```
+
+### Expected behaviour
+
+```text
+Supervisor
+    ↓
+Knowledge Agent
+    ↓
+Knowledge / RAG Retrieval
+    ↓
+Relevant Documentation
+    ↓
+Grounded Response
+```
+
+### Expected result
+
+The response should retrieve the relevant SLA documentation.
+
+Example source:
+
+```json
+{
+  "id": "DOC-001",
+  "title": "Priority Incident SLA",
+  "content": "Priority 1 network incidents require immediate operational attention according to the enterprise incident management policy.",
+  "score": 7
+}
+```
+
+The response may also contain lower-relevance documents because the current draft retrieval implementation is intentionally simple.
+
+### Validation
+
+The test passes if:
+
+* [x] Request is accepted by the API
+* [x] Supervisor routes to the Knowledge Agent
+* [x] Relevant documentation is retrieved
+* [x] Retrieved sources are returned in the API response
+* [x] Response is generated from the knowledge workflow
+
+---
+
+## Test 3 — Customer Troubleshooting
+
+### User request
+
+```json
+{
+  "message": "Why can't customer 10001 activate 5G?"
+}
+```
+
+### Expected behaviour
+
+```text
+Supervisor
+    ↓
+Customer Agent
+    ↓
+Customer Information
+    ↓
+Service / Product Information
+    ↓
+Troubleshooting
+    ↓
+Response
+```
+
+### Validation
+
+The test should demonstrate that the system can:
+
+* Identify the customer
+* Retrieve the customer's services
+* Determine the likely 5G activation issue
+* Provide a troubleshooting explanation
+* Reference relevant product or knowledge information
+* Avoid performing an action automatically
+
+---
+
+## Test 4 — Agentic Action Workflow
+
+### User request
+
+```json
+{
+  "message": "Customer 10002 is affected by INC-1003. Create a support incident and notify the support team."
+}
+```
+
+### Expected behaviour
+
+```text
+Supervisor
+      ↓
+Action Agent
+      ↓
+Retrieve / Validate Customer
+      ↓
+Retrieve / Validate Incident
+      ↓
+Determine Required Actions
+      ↓
+Human Approval
+      ↓
+Create Support Incident
+      ↓
+Notify Support Team
+      ↓
+Audit Result
+```
+
+### Validation
+
+This scenario is particularly important because it demonstrates the difference between **read-only AI assistance** and **AI-initiated enterprise actions**.
+
+The test should verify that:
+
+* The request is routed to the Action Agent
+* Customer and incident information can be identified
+* The requested actions are recognised
+* Sensitive operations are subject to approval
+* The system does not blindly execute sensitive actions without the required approval
+
+---
+
+# Expected Test Matrix
+
+| Test | Request Type                  | Expected Agent | Approval         |
+| ---- | ----------------------------- | -------------- | ---------------- |
+| 1    | Network investigation         | `incident`     | No               |
+| 2    | SLA / documentation           | `knowledge`    | No               |
+| 3    | Customer troubleshooting      | `customer`     | No               |
+| 4    | Create incident / notify team | `action`       | Yes / controlled |
+
+---
+
+# Quick Test Script
+
+The following four requests can be copied directly into Swagger:
+
+### 1. Incident
+
+```json
+{
+  "message": "Are there any active network incidents affecting Helsinki?"
+}
+```
+
+Expected agent:
+
+```text
+incident
+```
+
+---
+
+### 2. Knowledge / RAG
+
+```json
+{
+  "message": "What is the SLA for a Priority 1 network incident?"
+}
+```
+
+Expected agent:
+
+```text
+knowledge
+```
+
+---
+
+### 3. Customer
+
+```json
+{
+  "message": "Why can't customer 10001 activate 5G?"
+}
+```
+
+Expected agent:
+
+```text
+customer
+```
+
+---
+
+### 4. Action
+
+```json
+{
+  "message": "Customer 10002 is affected by INC-1003. Create a support incident and notify the support team."
+}
+```
+
+Expected agent:
+
+```text
+action
+```
+
+---
+
+# Demo Success Criteria
+
+The draft demonstration is considered successful when all four scenarios can be submitted through the `/chat` API without server errors and the requests are routed to the expected specialist agents.
+
+Demonstration:
+
+```text
+                    ┌── Knowledge / RAG
+                    │
+                    ├── Customer
+User → API → Supervisor
+                    ├── Incident
+                    │
+                    └── Action
+                         ↓
+                   Human Approval
+```
+
+The current implementation is a **development/demo environment**. Azure OpenAI, production databases, external MCP services, authentication, and production infrastructure are planned components and are not required for the current demonstration.
+
 ---
 
 # License
