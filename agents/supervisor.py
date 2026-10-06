@@ -5,12 +5,8 @@ from agents.state import AgentState
 
 
 class RoutingDecision(BaseModel):
-
     next_agent: str = Field(
-        description=(
-            "One of: knowledge, customer, "
-            "incident, action"
-        )
+        description=("One of: knowledge, customer, incident, action")
     )
 
 
@@ -19,9 +15,7 @@ def supervisor_agent(
     llm: AzureChatOpenAI,
 ) -> AgentState:
 
-    structured_llm = llm.with_structured_output(
-        RoutingDecision
-    )
+    structured_llm = llm.with_structured_output(RoutingDecision)
 
     prompt = f"""
 You are the supervisor of a telecommunications

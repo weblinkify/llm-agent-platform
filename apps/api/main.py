@@ -49,12 +49,8 @@ async def chat(request: ChatRequest):
             "requires_approval",
             False,
         ),
-        "customer": result.get(
-            "customer_data"
-        ),
-        "incident": result.get(
-            "incident_data"
-        ),
+        "customer": result.get("customer_data"),
+        "incident": result.get("incident_data"),
         "sources": result.get(
             "retrieved_documents",
             [],

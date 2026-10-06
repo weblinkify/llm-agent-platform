@@ -17,32 +17,27 @@ def build_graph(llm):
 
     graph.add_node(
         "supervisor",
-        lambda state:
-            supervisor_agent(state, llm),
+        lambda state: supervisor_agent(state, llm),
     )
 
     graph.add_node(
         "knowledge",
-        lambda state:
-            knowledge_agent(state, llm),
+        lambda state: knowledge_agent(state, llm),
     )
 
     graph.add_node(
         "customer",
-        lambda state:
-            customer_agent(state, llm),
+        lambda state: customer_agent(state, llm),
     )
 
     graph.add_node(
         "incident",
-        lambda state:
-            incident_agent(state, llm),
+        lambda state: incident_agent(state, llm),
     )
 
     graph.add_node(
         "action",
-        lambda state:
-            action_agent(state),
+        lambda state: action_agent(state),
     )
 
     graph.set_entry_point("supervisor")

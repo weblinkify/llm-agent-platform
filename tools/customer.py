@@ -6,9 +6,7 @@ CUSTOMERS = {
         "services": [
             "Broadband",
         ],
-        "eligible_products": [
-            "5G Mobile"
-        ],
+        "eligible_products": ["5G Mobile"],
     },
     "10002": {
         "customer_id": "10002",

@@ -11,28 +11,18 @@ class MockStructuredLLM:
         text = str(prompt).lower()
 
         if "create a support incident" in text or "notify the support team" in text:
-            return RoutingDecision(
-                next_agent="action"
-            )
+            return RoutingDecision(next_agent="action")
 
         if "customer 10001" in text or "activate 5g" in text:
-            return RoutingDecision(
-                next_agent="customer"
-            )
+            return RoutingDecision(next_agent="customer")
 
         if "active network incident" in text or "network incidents" in text:
-            return RoutingDecision(
-                next_agent="incident"
-            )
+            return RoutingDecision(next_agent="incident")
 
         if "sla" in text or "priority 1" in text:
-            return RoutingDecision(
-                next_agent="knowledge"
-            )
+            return RoutingDecision(next_agent="knowledge")
 
-        return RoutingDecision(
-            next_agent="knowledge"
-        )
+        return RoutingDecision(next_agent="knowledge")
 
 
 class MockLLM:

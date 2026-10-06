@@ -24,7 +24,6 @@ def incident_agent(
     )
 
     if incident_match:
-
         incident_id = incident_match.group(0).upper()
 
         incident = get_incident(incident_id)

@@ -24,10 +24,7 @@ def customer_agent(
     if not match:
         return {
             **state,
-            "final_answer": (
-                "I need a valid customer ID to investigate "
-                "the customer."
-            ),
+            "final_answer": ("I need a valid customer ID to investigate the customer."),
             "next_agent": "end",
         }
 
@@ -39,9 +36,7 @@ def customer_agent(
         return {
             **state,
             "customer_id": customer_id,
-            "final_answer": (
-                f"Customer {customer_id} was not found."
-            ),
+            "final_answer": (f"Customer {customer_id} was not found."),
             "next_agent": "end",
         }
 

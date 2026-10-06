@@ -25,9 +25,7 @@ def knowledge_agent(
         }
 
     context = "\n\n".join(
-        f"[{doc['id']}] {doc['title']}\n"
-        f"{doc['content']}"
-        for doc in documents
+        f"[{doc['id']}] {doc['title']}\n{doc['content']}" for doc in documents
     )
 
     prompt = f"""

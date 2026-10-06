@@ -33,7 +33,6 @@ def search_incidents(
     results = []
 
     for incident in INCIDENTS.values():
-
         if location:
             if incident["location"].lower() != location.lower():
                 continue

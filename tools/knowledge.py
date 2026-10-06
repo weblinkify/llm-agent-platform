@@ -11,8 +11,7 @@ DOCUMENTS = [
         "id": "DOC-002",
         "title": "5G Activation Procedure",
         "content": (
-            "Customers must have a compatible 5G plan before attempting "
-            "5G activation."
+            "Customers must have a compatible 5G plan before attempting 5G activation."
         ),
     },
 ]
@@ -25,23 +24,17 @@ def search_knowledge_base(query: str) -> list[dict]:
     results = []
 
     for document in DOCUMENTS:
+        text = (document["title"] + " " + document["content"]).lower()
 
-        text = (
-            document["title"] + " " +
-            document["content"]
-        ).lower()
-
-        score = sum(
-            1
-            for word in query_words
-            if word in text
-        )
+        score = sum(1 for word in query_words if word in text)
 
         if score > 0:
-            results.append({
-                **document,
-                "score": score,
-            })
+            results.append(
+                {
+                    **document,
+                    "score": score,
+                }
+            )
 
     results.sort(
         key=lambda item: item["score"],

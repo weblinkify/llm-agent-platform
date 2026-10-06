@@ -19,7 +19,6 @@ def action_agent(
     )
 
     if not approval_granted:
-
         return {
             **state,
             "requires_approval": True,
@@ -31,7 +30,6 @@ def action_agent(
         }
 
     if "create" in user_input.lower() and "incident" in user_input.lower():
-
         incident = create_incident(
             title="Customer operational issue",
             description=user_input,
@@ -40,8 +38,7 @@ def action_agent(
 
         notification = notify_support_team(
             message=(
-                f"New incident {incident['incident_id']} "
-                f"requires support attention."
+                f"New incident {incident['incident_id']} requires support attention."
             )
         )
 
@@ -49,8 +46,7 @@ def action_agent(
             **state,
             "requires_approval": False,
             "final_answer": (
-                f"Incident {incident['incident_id']} created "
-                f"and support team notified."
+                f"Incident {incident['incident_id']} created and support team notified."
             ),
             "tool_results": [
                 incident,
@@ -61,8 +57,6 @@ def action_agent(
 
     return {
         **state,
-        "final_answer": (
-            "I could not identify a supported enterprise action."
-        ),
+        "final_answer": ("I could not identify a supported enterprise action."),
         "next_agent": "end",
     }
