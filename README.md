@@ -986,7 +986,6 @@ The AI can recommend an action without necessarily executing it.
 A successful API response does not necessarily mean a successful AI response.
 
 ---
-
 # Roadmap
 
 ## Phase 1 — Foundation
@@ -1001,7 +1000,7 @@ A successful API response does not necessarily mean a successful AI response.
 
 * [ ] PostgreSQL
 * [ ] Redis
-* [ ] Synthetic telecom data
+* [x] Synthetic telecom data
 * [ ] Database models
 
 ## Phase 3 — RAG
@@ -1009,18 +1008,18 @@ A successful API response does not necessarily mean a successful AI response.
 * [ ] Document ingestion
 * [ ] Chunking
 * [ ] Embeddings
-* [ ] Vector search
+* [x] Vector search
 * [ ] Hybrid retrieval
 * [ ] Reranking
-* [ ] Citations
+* [x] Citations
 
 ## Phase 4 — Agents
 
-* [ ] Supervisor Agent
-* [ ] Knowledge Agent
-* [ ] Customer Agent
-* [ ] Incident Agent
-* [ ] Action Agent
+* [x] Supervisor Agent
+* [x] Knowledge Agent
+* [x] Customer Agent
+* [x] Incident Agent
+* [x] Action Agent
 
 ## Phase 5 — MCP
 
