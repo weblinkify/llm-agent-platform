@@ -1,6 +1,6 @@
 from typing import Any, Literal
-from typing_extensions import TypedDict
 
+from typing_extensions import TypedDict
 
 AgentName = Literal[
     "knowledge",

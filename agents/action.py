@@ -1,5 +1,3 @@
-import re
-
 from agents.state import AgentState
 from tools.action import (
     create_incident,

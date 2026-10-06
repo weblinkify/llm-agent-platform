@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from agents.graph import build_graph
 from llm_mock import MockLLM
 
-
 app = FastAPI(
     title="Telco AI Operations Assistant",
     version="1.0.0",

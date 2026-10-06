@@ -29,17 +29,14 @@ def search_incidents(
     location: str | None = None,
     status: str | None = None,
 ) -> list[dict]:
-
     results = []
 
     for incident in INCIDENTS.values():
-        if location:
-            if incident["location"].lower() != location.lower():
-                continue
+        if location and incident["location"].lower() != location.lower():
+            continue
 
-        if status:
-            if incident["status"].lower() != status.lower():
-                continue
+        if status and incident["status"].lower() != status.lower():
+            continue
 
         results.append(incident)
 

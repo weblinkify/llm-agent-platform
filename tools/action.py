@@ -1,5 +1,4 @@
-from datetime import datetime, timezone
-
+from datetime import UTC, datetime
 
 INCIDENT_STORE: dict[str, dict] = {}
 
@@ -18,7 +17,7 @@ def create_incident(
         "description": description,
         "severity": severity,
         "status": "OPEN",
-        "created_at": datetime.now(timezone.utc).isoformat(),
+        "created_at": datetime.now(UTC).isoformat(),
     }
 
     INCIDENT_STORE[incident_id] = incident
