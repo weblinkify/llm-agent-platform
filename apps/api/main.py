@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 from agents.graph import build_graph
-from llm_mock import MockLLM
+from agents.llm_mock import MockLLM
 
 app = FastAPI(
     title="Telco AI Operations Assistant",
@@ -10,13 +10,20 @@ app = FastAPI(
 )
 
 llm = MockLLM()
-
 agent = build_graph(llm)
 
 
 class ChatRequest(BaseModel):
     message: str
     approval_granted: bool = False
+
+
+@app.get("/")
+async def root():
+    return {
+        "status": "ok",
+        "service": "Telco AI Operations Assistant",
+    }
 
 
 @app.get("/health")
@@ -26,9 +33,15 @@ async def health():
     }
 
 
+@app.get("/readiness")
+async def readiness():
+    return {
+        "status": "ready",
+    }
+
+
 @app.post("/chat")
 async def chat(request: ChatRequest):
-
     state = {
         "user_input": request.message,
         "messages": [],

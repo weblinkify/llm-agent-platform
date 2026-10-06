@@ -19,6 +19,7 @@ dev = [
     "pytest-asyncio",
     "ruff",
     "mypy",
+    "pytest-cov",
 ]
 
 [tool.ruff]
@@ -33,6 +34,7 @@ include = [
     "apps*",
     "rag*",
     "prompts*",
+    "tools*",
 ]
 exclude = [
     "infrastructure*",
