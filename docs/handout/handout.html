@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Telco AI Operations Assistant — Project Brief</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Inter, -apple-system, "Segoe UI", sans-serif; color: #0f172a; font-size: 10.5pt; line-height: 1.45; }
+  .page { width: 210mm; height: 297mm; padding: 14mm 15mm 12mm; display: flex; flex-direction: column; gap: 5mm; }
+  header { background: linear-gradient(120deg, #312e81, #0369a1); color: white; border-radius: 10px; padding: 7mm 8mm; }
+  header h1 { margin: 0 0 1.5mm; font-size: 20pt; letter-spacing: -0.02em; }
+  header p { margin: 0; font-size: 11pt; opacity: .92; }
+  .links { margin-top: 3mm; font-size: 9.5pt; display: flex; gap: 6mm; flex-wrap: wrap; }
+  .links b { color: #bae6fd; }
+  h2 { font-size: 10pt; text-transform: uppercase; letter-spacing: .08em; color: #4338ca; margin: 0 0 2mm; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  ul { margin: 0; padding-left: 4.5mm; }
+  li { margin-bottom: 1.2mm; }
+  .card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 4mm 4.5mm; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
+  td { padding: 1.3mm 0; border-bottom: 1px solid #f1f5f9; }
+  td:last-child { text-align: right; font-weight: 600; color: #047857; }
+  .flow { display: flex; align-items: center; gap: 2mm; flex-wrap: wrap; font-size: 9pt; }
+  .flow span { background: #eef2ff; color: #3730a3; border-radius: 5px; padding: 1.2mm 2.4mm; font-weight: 600; }
+  .flow i { color: #94a3b8; font-style: normal; }
+  .flow .hitl { background: #fef3c7; color: #92400e; }
+  .stack { display: flex; flex-wrap: wrap; gap: 1.5mm; }
+  .stack span { font-size: 8.5pt; background: #f1f5f9; border-radius: 4px; padding: .8mm 2mm; }
+  .note { font-size: 8pt; color: #64748b; }
+  img { width: 100%; border-radius: 6px; border: 1px solid #e2e8f0; }
+  footer { margin-top: auto; font-size: 8.5pt; color: #475569; display: flex; justify-content: space-between; border-top: 1px solid #e2e8f0; padding-top: 3mm; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Telco AI Operations Assistant</h1>
+    <p>A production-style multi-agent AI assistant for support and NOC teams: it answers from your documentation with citations, investigates customers and incidents through secure tools, and changes systems only after human approval.</p>
+    <div class="links">
+      <div>▶ Live demo: <b>__DEMO_URL__</b></div>
+      <div>⌘ Code: <b>github.com/weblinkify/llm-agent-platform</b></div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h2>What it does for your business</h2>
+      <ul>
+        <li><b>Reduces L1 load:</b> cited answers from SLAs and runbooks, plus customer diagnoses with next steps.</li>
+        <li><b>Safe AI actions:</b> the AI proposes; a different authorised person approves; only then do tools run.</li>
+        <li><b>Measurable quality:</b> a 48-case eval suite gates every release.</li>
+        <li><b>Enterprise security:</b> JWT auth, role-based tool access, injection defence, PII masking, audit log.</li>
+        <li><b>Runs on your cloud:</b> Docker + Terraform for Azure; Azure OpenAI, OpenAI or Anthropic.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Measured, not claimed</h2>
+      <table>
+        <tr><td>Routing accuracy</td><td>100%</td></tr>
+        <tr><td>Retrieval recall@4</td><td>95.8%</td></tr>
+        <tr><td>Tool-call correctness (incl. approvals)</td><td>100%</td></tr>
+        <tr><td>Prompt-injection attacks blocked</td><td>6 / 6</td></tr>
+        <tr><td>Automated tests / coverage</td><td>93 / 93%</td></tr>
+        <tr><td>Browser end-to-end tests</td><td>7 / 7</td></tr>
+      </table>
+      <p class="note">Mock-mode eval suite run in CI on every change; the LLM is a deterministic test double, so these figures measure retrieval, tools, approvals and security.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How a request flows</h2>
+    <div class="flow">
+      <span>User (role-based login)</span><i>→</i><span>Supervisor agent</span><i>→</i>
+      <span>Knowledge · Customer · Incident · Action</span><i>→</i><span>MCP tool server (RBAC)</span><i>→</i>
+      <span>CRM · incidents · network · hybrid RAG</span><i>→</i><span class="hitl">Human approval for writes</span><i>→</i><span>Guard → answer + sources</span>
+    </div>
+  </div>
+
+  <img src="../media/approval-flow.png" alt="Ops console showing an approved action">
+
+  <div class="grid">
+    <div class="card">
+      <h2>Delivered in this project</h2>
+      <ul>
+        <li>LangGraph multi-agent workflow with pause/resume approvals (Postgres checkpoints)</li>
+        <li>MCP server with 12 typed tools; works with Claude Desktop</li>
+        <li>Hybrid RAG: BM25 + pgvector, rank fusion, reranker, "insufficient context" guard</li>
+        <li>Next.js console: streaming, agent trace, approval inbox, role switcher</li>
+        <li>OpenTelemetry tracing, Prometheus metrics, cost per request</li>
+        <li>CI/CD: tests, evals, e2e, security scans, container scan, Terraform</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Technology</h2>
+      <div class="stack">
+        <span>Python 3.12</span><span>FastAPI</span><span>LangGraph</span><span>MCP SDK</span><span>Pydantic</span>
+        <span>PostgreSQL + pgvector</span><span>Azure OpenAI</span><span>OpenAI</span><span>Anthropic</span>
+        <span>Next.js 16</span><span>TypeScript</span><span>Tailwind</span><span>Playwright</span><span>Docker</span>
+        <span>Terraform</span><span>Azure Container Apps</span><span>Key Vault</span><span>OpenTelemetry</span>
+        <span>Jaeger</span><span>Prometheus</span><span>GitHub Actions</span>
+      </div>
+      <h2 style="margin-top:4mm">Adapt it to you</h2>
+      <p style="margin:0">Swap the synthetic data for your ticketing, CRM and docs (Jira, ServiceNow, Salesforce, SharePoint) by adding MCP tools: the agents, approvals, security and evals carry over.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span>Run it yourself in one command: <b>docker compose up</b> (no API keys needed)</span>
+    <span>All data is synthetic</span>
+  </footer>
+</div>
+</body>
+</html>
