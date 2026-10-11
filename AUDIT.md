@@ -1,5 +1,39 @@
 # Repository Audit
 
+## Status after the upgrade (2026-10-11)
+
+All phases are implemented and tested. The original audit (below) is kept for reference.
+
+| Area | Status | Evidence |
+|---|---|---|
+| Real LLM providers (Azure OpenAI, OpenAI, Anthropic, mock) | ✅ | `llm/`, `tests/unit/test_llm_providers.py` |
+| Ingestion (md + PDF), recursive chunking, embeddings, pgvector | ✅ | `rag/`, `tests/integration/test_postgres.py` |
+| Hybrid retrieval (BM25 + vector, RRF, reranker, threshold, insufficient context) | ✅ | `rag/retriever.py`, `tests/unit/test_rag.py` |
+| Citations with doc IDs and snippets | ✅ | `agents/common.py`, `test_scenario_2_*` |
+| 32-document corpus incl. poisoned doc | ✅ | `data/documents` |
+| MCP server, all 12 README tools, Pydantic I/O, errors, logging | ✅ | `apps/mcp_server`, `tests/integration/test_mcp_server.py`, `test_mcp_stdio.py` |
+| Agents access data only through MCP | ✅ | `agents/runtime.py` (`McpGateway`) |
+| HITL: LangGraph interrupt, Postgres checkpointer, `/approvals` | ✅ | `agents/action.py`, `apps/api/service.py`, resume-after-restart test |
+| Audit log of steps, tool calls and decisions | ✅ | `storage/`, `test_audit_log_records_every_step` |
+| JWT + 4 RBAC roles enforced per MCP tool | ✅ | `security/`, `test_rbac_enforced_per_tool` |
+| Prompt-injection defence with poisoned-doc test | ✅ | `security/injection.py`, `tests/integration/test_prompt_injection.py` |
+| PII redaction, rate limiting | ✅ | `security/pii.py`, `security/ratelimit.py` |
+| bandit, pip-audit, Trivy (+ npm audit, gitleaks, CodeQL) in CI | ✅ | `.github/workflows` |
+| 48-case golden dataset, eval runner, CI regression gate, nightly real-model job | ✅ | `evals/` |
+| OpenTelemetry across API → agent → MCP → LLM with tokens/cost | ✅ | `observability/`, `docs/media/jaeger-trace.png` |
+| Langfuse | ⚠️ replaced | Jaeger in compose; OTLP works with Langfuse (ADR-0005) |
+| `/metrics` (Prometheus) | ✅ | `observability/metrics.py` |
+| Next.js UI: streaming, agent indicator, citations, timeline, approvals, roles, scenarios | ✅ | `apps/frontend`, 7 Playwright tests |
+| `docker compose up` with zero keys | ✅ | `docker-compose.yml`, CI smoke test |
+| Terraform for Azure (Container Apps, Postgres Flexible, Key Vault, ACR) | ✅ validated, not applied | `infrastructure/terraform` |
+| CI: ruff, mypy, unit, integration, evals, security, Docker, coverage ≥85% | ✅ | `ci.yml` (93% coverage) |
+| Real-model eval numbers | ❌ pending | Needs an API key (`evals-nightly.yml`) |
+| Multi-turn conversations, Redis, Entra ID | ❌ not claimed | Listed in README roadmap |
+
+---
+
+## Original audit (commit 6f12763)
+
 Audit of every claim in `README.md` against the code at commit `6f12763` (2026-10-11).
 
 **Legend:** ✅ implemented · ⚠️ partial / stubbed · ❌ missing
