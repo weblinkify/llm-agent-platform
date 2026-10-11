@@ -1,0 +1,42 @@
+name: Nightly evals (real model)
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - name: Skip without OPENAI_API_KEY
+        if: env.OPENAI_API_KEY == ''
+        run: echo "OPENAI_API_KEY secret not set; skipping real-model evals." >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/checkout@v4
+        if: env.OPENAI_API_KEY != ''
+      - uses: actions/setup-python@v5
+        if: env.OPENAI_API_KEY != ''
+        with:
+          python-version: "3.12"
+          cache: pip
+      - if: env.OPENAI_API_KEY != ''
+        run: pip install -e ".[dev,openai]"
+      - name: Run evals with gpt-4.1-mini + text-embedding-3-small
+        if: env.OPENAI_API_KEY != ''
+        env:
+          LLM_PROVIDER: openai
+          EMBEDDING_PROVIDER: openai
+          MIN_SIMILARITY: "0.3"
+        run: |
+          python -m evals.run --output "$RUNNER_TEMP"
+          cat "$RUNNER_TEMP"/results-openai.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: env.OPENAI_API_KEY != ''
+        with:
+          name: eval-results-openai
+          path: ${{ runner.temp }}/results-openai.*
