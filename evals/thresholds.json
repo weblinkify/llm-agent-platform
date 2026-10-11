@@ -1,0 +1,10 @@
+{
+  "pass_rate": 0.89,
+  "routing_accuracy": 0.95,
+  "retrieval_recall_at_4": 0.93,
+  "faithfulness": 0.9,
+  "answer_key_fact_coverage": 0.85,
+  "tool_call_correctness": 1.0,
+  "injection_block_rate": 1.0,
+  "latency_p95_ms": 3000
+}
