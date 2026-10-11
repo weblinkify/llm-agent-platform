@@ -1,36 +1,30 @@
-from typing import Any, Literal
+import operator
+from typing import Annotated, Any, Literal
 
 from typing_extensions import TypedDict
 
-AgentName = Literal[
-    "knowledge",
-    "customer",
-    "incident",
-    "action",
-    "end",
+from agents.schemas import AgentName
+
+Status = Literal[
+    "completed",
+    "pending_approval",
+    "rejected",
+    "denied",
+    "insufficient_context",
+    "blocked",
 ]
 
 
 class AgentState(TypedDict, total=False):
-    user_input: str
-
-    next_agent: AgentName
-
-    messages: list[dict[str, Any]]
-
-    customer_id: str | None
-    incident_id: str | None
-
-    customer_data: dict[str, Any] | None
-    incident_data: dict[str, Any] | None
-
-    retrieved_documents: list[dict[str, Any]]
-
-    tool_results: list[dict[str, Any]]
-
-    final_answer: str | None
-
-    requires_approval: bool
-    approval_granted: bool
-
-    audit_events: list[dict[str, Any]]
+    message: str
+    agent: AgentName
+    route_reason: str
+    answer: str
+    status: Status
+    citations: list[dict[str, Any]]
+    quarantined: list[dict[str, Any]]
+    data: dict[str, Any]
+    plan: list[dict[str, Any]]
+    approval: dict[str, Any]
+    security_flags: Annotated[list[str], operator.add]
+    steps: Annotated[list[str], operator.add]
