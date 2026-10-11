@@ -62,7 +62,7 @@ class PgVectorStore:
     async def upsert(self, chunks: list[Chunk], vectors: Vector) -> None:
         async with self.pool.connection() as conn, conn.cursor() as cur:
             await cur.executemany(
-                f"INSERT INTO rag_chunks ({_COLUMNS}, embedding) "  # noqa: S608
+                f"INSERT INTO rag_chunks ({_COLUMNS}, embedding) "  # noqa: S608  # nosec B608 - constant column list, values are parameterised
                 "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) "
                 "ON CONFLICT (chunk_id) DO UPDATE SET text = EXCLUDED.text, "
                 "title = EXCLUDED.title, section = EXCLUDED.section, "
@@ -87,7 +87,7 @@ class PgVectorStore:
     async def search(self, query: Vector, k: int) -> list[tuple[Chunk, float]]:
         async with self.pool.connection() as conn, conn.cursor() as cur:
             await cur.execute(
-                f"SELECT {_COLUMNS}, 1 - (embedding <=> %s) AS similarity "  # noqa: S608
+                f"SELECT {_COLUMNS}, 1 - (embedding <=> %s) AS similarity "  # noqa: S608  # nosec B608 - constant column list, values are parameterised
                 "FROM rag_chunks ORDER BY embedding <=> %s LIMIT %s",
                 (
                     np.asarray(query, dtype=np.float32),
@@ -100,7 +100,7 @@ class PgVectorStore:
 
     async def all_chunks(self) -> list[Chunk]:
         async with self.pool.connection() as conn, conn.cursor() as cur:
-            await cur.execute(f"SELECT {_COLUMNS} FROM rag_chunks ORDER BY chunk_id")  # noqa: S608
+            await cur.execute(f"SELECT {_COLUMNS} FROM rag_chunks ORDER BY chunk_id")  # noqa: S608  # nosec B608 - constant column list, values are parameterised
             return [_row_to_chunk(r) for r in await cur.fetchall()]
 
     async def count(self) -> int:
