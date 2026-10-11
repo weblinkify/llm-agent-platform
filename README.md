@@ -11,8 +11,8 @@
 ![MCP](https://img.shields.io/badge/MCP-official%20SDK-F97316)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-**▶ Live demo:** __DEMO_URL__ (mock mode, no sign-up: switch roles in the sidebar)
-**🎥 2-minute walkthrough:** _Loom video coming soon_
+**▶ Live demo:** **[telco-ai-ops.vercel.app](https://telco-ai-ops.vercel.app)** (mock mode, no sign-up: switch roles in the sidebar)
+**🎥 2-minute walkthrough:** _Loom video coming soon_ · **📄 One-page brief:** [PDF](docs/handout/telco-ai-ops-handout.pdf)
 
 ![Approval flow: a support agent asks the AI to create an incident; the graph pauses; an admin approves; the MCP tools execute](docs/media/demo.gif)
 
@@ -211,7 +211,7 @@ docs/            architecture, security, evaluation, MCP, deployment, ADRs
 
 - **Local / on-prem:** `docker compose up`
 - **Azure:** [`infrastructure/terraform`](infrastructure/terraform) provisions Container Apps (API + internal MCP), Postgres Flexible Server with pgvector, Key Vault, ACR and Log Analytics. The Terraform is validated in CI but has not been applied from this repo. See [docs/deployment.md](docs/deployment.md).
-- **Public demo:** Vercel (API as a Python function in mock mode + Next.js frontend).
+- **Public demo:** [telco-ai-ops.vercel.app](https://telco-ai-ops.vercel.app) on Vercel (API as a Python function in mock mode + Next.js frontend; e2e suite verified against it).
 
 ## Roadmap
 

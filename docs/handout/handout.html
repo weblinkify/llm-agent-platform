@@ -6,17 +6,17 @@
 <style>
   @page { size: A4; margin: 0; }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: Inter, -apple-system, "Segoe UI", sans-serif; color: #0f172a; font-size: 10.5pt; line-height: 1.45; }
-  .page { width: 210mm; height: 297mm; padding: 14mm 15mm 12mm; display: flex; flex-direction: column; gap: 5mm; }
-  header { background: linear-gradient(120deg, #312e81, #0369a1); color: white; border-radius: 10px; padding: 7mm 8mm; }
-  header h1 { margin: 0 0 1.5mm; font-size: 20pt; letter-spacing: -0.02em; }
+  body { margin: 0; font-family: Inter, -apple-system, "Segoe UI", sans-serif; color: #0f172a; font-size: 9.5pt; line-height: 1.4; }
+  .page { width: 210mm; height: 297mm; padding: 12mm 14mm 10mm; display: flex; flex-direction: column; gap: 3mm; overflow: hidden; }
+  header { background: linear-gradient(120deg, #312e81, #0369a1); color: white; border-radius: 10px; padding: 6mm 7mm; }
+  header h1 { margin: 0 0 1.5mm; font-size: 19pt; letter-spacing: -0.02em; }
   header p { margin: 0; font-size: 11pt; opacity: .92; }
   .links { margin-top: 3mm; font-size: 9.5pt; display: flex; gap: 6mm; flex-wrap: wrap; }
   .links b { color: #bae6fd; }
   h2 { font-size: 10pt; text-transform: uppercase; letter-spacing: .08em; color: #4338ca; margin: 0 0 2mm; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
   ul { margin: 0; padding-left: 4.5mm; }
-  li { margin-bottom: 1.2mm; }
+  li { margin-bottom: .8mm; }
   .card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 4mm 4.5mm; }
   table { width: 100%; border-collapse: collapse; font-size: 9.5pt; }
   td { padding: 1.3mm 0; border-bottom: 1px solid #f1f5f9; }
@@ -26,9 +26,9 @@
   .flow i { color: #94a3b8; font-style: normal; }
   .flow .hitl { background: #fef3c7; color: #92400e; }
   .stack { display: flex; flex-wrap: wrap; gap: 1.5mm; }
-  .stack span { font-size: 8.5pt; background: #f1f5f9; border-radius: 4px; padding: .8mm 2mm; }
+  .stack span { font-size: 8pt; background: #f1f5f9; border-radius: 4px; padding: .5mm 1.6mm; }
   .note { font-size: 8pt; color: #64748b; }
-  img { width: 100%; border-radius: 6px; border: 1px solid #e2e8f0; }
+  img { width: 100%; height: 50mm; object-fit: cover; object-position: top; border-radius: 6px; border: 1px solid #e2e8f0; }
   footer { margin-top: auto; font-size: 8.5pt; color: #475569; display: flex; justify-content: space-between; border-top: 1px solid #e2e8f0; padding-top: 3mm; }
 </style>
 </head>
@@ -38,7 +38,7 @@
     <h1>Telco AI Operations Assistant</h1>
     <p>A production-style multi-agent AI assistant for support and NOC teams: it answers from your documentation with citations, investigates customers and incidents through secure tools, and changes systems only after human approval.</p>
     <div class="links">
-      <div>▶ Live demo: <b>__DEMO_URL__</b></div>
+      <div>▶ Live demo: <b>telco-ai-ops.vercel.app</b></div>
       <div>⌘ Code: <b>github.com/weblinkify/llm-agent-platform</b></div>
     </div>
   </header>
@@ -65,15 +65,6 @@
         <tr><td>Browser end-to-end tests</td><td>7 / 7</td></tr>
       </table>
       <p class="note">Mock-mode eval suite run in CI on every change; the LLM is a deterministic test double, so these figures measure retrieval, tools, approvals and security.</p>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>How a request flows</h2>
-    <div class="flow">
-      <span>User (role-based login)</span><i>→</i><span>Supervisor agent</span><i>→</i>
-      <span>Knowledge · Customer · Incident · Action</span><i>→</i><span>MCP tool server (RBAC)</span><i>→</i>
-      <span>CRM · incidents · network · hybrid RAG</span><i>→</i><span class="hitl">Human approval for writes</span><i>→</i><span>Guard → answer + sources</span>
     </div>
   </div>
 
