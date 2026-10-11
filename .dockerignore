@@ -122,3 +122,11 @@ docs/_build/
 .mcp/
 mcp-data/
 agent-state/
+# ============================================================
+# Repo-specific
+# ============================================================
+apps/frontend/
+docs/
+evals/results*.json
+tests/
+.claude/

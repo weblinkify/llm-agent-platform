@@ -1,68 +1,94 @@
+# Full stack in mock mode, no API keys required:
+#   docker compose up --build
+# UI http://localhost:3000 · API http://localhost:8000/docs · Jaeger http://localhost:16686
+# To use a real model, create .env with LLM_PROVIDER and the matching key (see .env.example).
+
+x-app-env: &app-env
+  LLM_PROVIDER: ${LLM_PROVIDER:-mock}
+  EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-hashing}
+  JWT_SECRET: ${JWT_SECRET:-compose-dev-secret-change-me-0123456789}
+  LOG_LEVEL: INFO
+
 services:
-
-  api:
-    build:
-      context: .
-      dockerfile: infrastructure/docker/Dockerfile
-
-    container_name: telco-ai-api
-
-    env_file:
-      - .env
-
-    ports:
-      - "8000:8000"
-
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_started
-
-    restart: unless-stopped
-
   postgres:
-    image: postgres:16-alpine
-
-    container_name: telco-ai-postgres
-
+    image: pgvector/pgvector:pg16
     environment:
       POSTGRES_DB: telco_ai
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-
-    ports:
-      - "5432:5432"
-
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U postgres -d telco_ai"
-        ]
-      interval: 10s
+      test: ["CMD-SHELL", "pg_isready -U postgres -d telco_ai"]
+      interval: 5s
       timeout: 5s
-      retries: 5
-
+      retries: 10
     restart: unless-stopped
 
-  redis:
-    image: redis:7-alpine
+  mcp:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile
+    image: telco-ai-api:local
+    command: ["telco-mcp", "--transport", "streamable-http", "--host", "0.0.0.0", "--port", "8001"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      <<: *app-env
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/telco_ai
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: telco-mcp-server
+    env_file:
+      - path: .env
+        required: false
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 8001), 2)"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
 
-    container_name: telco-ai-redis
-
+  api:
+    image: telco-ai-api:local
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mcp:
+        condition: service_healthy
+    environment:
+      <<: *app-env
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/telco_ai
+      MCP_SERVER_URL: http://mcp:8001/mcp
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      MOCK_TOKEN_DELAY_MS: ${MOCK_TOKEN_DELAY_MS:-20}
+      CORS_ORIGINS: '["http://localhost:3000"]'
+    env_file:
+      - path: .env
+        required: false
     ports:
-      - "6379:6379"
-
-    volumes:
-      - redis_data:/data
-
+      - "8000:8000"
     restart: unless-stopped
 
+  web:
+    build:
+      context: apps/frontend
+      args:
+        API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.62.0
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686"
+    restart: unless-stopped
 
 volumes:
   postgres_data:
-  redis_data:

@@ -1,77 +1,39 @@
 # syntax=docker/dockerfile:1.7
+# API and MCP server image (same code, different command).
 
-# ============================================================
-# Base
-# ============================================================
 FROM python:3.12-slim AS base
-
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
-
 WORKDIR /app
 
-# System dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-
-# ============================================================
-# Builder
-# ============================================================
 FROM base AS builder
+COPY pyproject.toml README.md ./
+COPY agents ./agents
+COPY apps/__init__.py ./apps/__init__.py
+COPY apps/api ./apps/api
+COPY apps/mcp_server ./apps/mcp_server
+COPY core ./core
+COPY evals ./evals
+COPY llm ./llm
+COPY observability ./observability
+COPY prompts ./prompts
+COPY rag ./rag
+COPY security ./security
+COPY services ./services
+COPY storage ./storage
+RUN pip install --prefix=/install ".[postgres]"
 
-# Build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY pyproject.toml ./
-
-# Install dependencies into an isolated directory
-RUN pip install --upgrade pip && \
-    pip install --prefix=/install .
-
-
-# ============================================================
-# Production
-# ============================================================
 FROM base AS production
-
-# Copy installed Python packages
 COPY --from=builder /install /usr/local
-
-# Copy application
-COPY apps/ ./apps/
-COPY agents/ ./agents/
-COPY rag/ ./rag/
-COPY prompts/ ./prompts/
-COPY tools/ ./tools/
-
-# Create non-root user
-RUN groupadd --system appgroup && \
-    useradd --system \
-            --gid appgroup \
-            --home-dir /app \
-            --shell /usr/sbin/nologin \
-            appuser
-
-# Ensure application files are owned by non-root user
-RUN chown -R appuser:appgroup /app
-
-USER appuser
-
-# Application port
+COPY data ./data
+RUN groupadd --system app && useradd --system --gid app --home-dir /app --shell /usr/sbin/nologin app \
+    && chown -R app:app /app
+USER app
+ENV DOCUMENTS_DIR=/app/data/documents \
+    ENTERPRISE_DATA_DIR=/app/data/enterprise
 EXPOSE 8000
-
-# Container health check
-HEALTHCHECK --interval=30s \
-            --timeout=5s \
-            --start-period=20s \
-            --retries=3 \
-    CMD curl --fail http://localhost:8000/health || exit 1
-
-# Start FastAPI application
-CMD ["uvicorn", "apps.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=5 \
+    CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4).status == 200 else 1)"
+CMD ["uvicorn", "apps.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers"]
