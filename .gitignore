@@ -161,3 +161,4 @@ docs/_build/
 # =========================
 *.local
 *.local.json
+.vercel
