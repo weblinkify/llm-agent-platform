@@ -10,6 +10,36 @@ _PDF_ID = re.compile(r"\((DOC-\d+)\)")
 _WRAPPED_LINE = re.compile(r"(?<![.:!?])\n(?=[a-z0-9(])")
 
 
+def _cells(line: str) -> list[str]:
+    return [c.strip().strip("`") for c in line.strip().strip("|").split("|")]
+
+
+def linearize_tables(text: str) -> str:
+    """Rewrite markdown tables as one sentence per row ("P2: Acknowledge 30 minutes;
+    Restore service 8 hours.") so rows stay meaningful after chunking and match
+    keyword and semantic search."""
+    out: list[str] = []
+    lines = text.splitlines()
+    i = 0
+    while i < len(lines):
+        if (
+            lines[i].lstrip().startswith("|")
+            and i + 1 < len(lines)
+            and set(lines[i + 1]) <= set("|-: ")
+        ):
+            header = _cells(lines[i])
+            i += 2
+            while i < len(lines) and lines[i].lstrip().startswith("|"):
+                row = _cells(lines[i])
+                pairs = "; ".join(f"{h} {v}" for h, v in zip(header[1:], row[1:], strict=False))
+                out.append(f"- {row[0]}: {pairs}.")
+                i += 1
+            continue
+        out.append(lines[i])
+        i += 1
+    return "\n".join(out)
+
+
 def _parse_markdown(path: Path) -> Document:
     raw = path.read_text(encoding="utf-8")
     meta: dict[str, str] = {}
@@ -23,7 +53,7 @@ def _parse_markdown(path: Path) -> Document:
         title=meta.get("title", path.stem.replace("-", " ").title()),
         category=meta.get("category", "general"),
         source=path.name,
-        text=raw.strip(),
+        text=linearize_tables(raw.strip()),
     )
 
 
