@@ -1,0 +1,12 @@
+[
+  {"product_id": "FIB-100", "name": "Fiber 100M", "category": "BROADBAND", "network_generation": "FIBER", "five_g_enabled": false, "monthly_price_eur": 34.9, "description": "Residential fiber broadband, 100/100 Mbit/s."},
+  {"product_id": "FIB-1000", "name": "Fiber 1G", "category": "BROADBAND", "network_generation": "FIBER", "five_g_enabled": false, "monthly_price_eur": 54.9, "description": "Residential fiber broadband, 1000/1000 Mbit/s."},
+  {"product_id": "MOB-4G-BASIC", "name": "Mobile 4G Basic", "category": "MOBILE", "network_generation": "4G", "five_g_enabled": false, "monthly_price_eur": 14.9, "description": "4G/LTE mobile plan, 20 GB data. Does not include 5G network access."},
+  {"product_id": "MOB-5G-PLUS", "name": "Mobile 5G Plus", "category": "MOBILE", "network_generation": "5G", "five_g_enabled": true, "monthly_price_eur": 29.9, "description": "5G mobile plan, unlimited data at 300 Mbit/s."},
+  {"product_id": "MOB-5G-UNLIMITED", "name": "Mobile 5G Unlimited", "category": "MOBILE", "network_generation": "5G", "five_g_enabled": true, "monthly_price_eur": 39.9, "description": "5G mobile plan, unlimited data at maximum speed, EU roaming 50 GB."},
+  {"product_id": "FWA-5G-HOME", "name": "5G Home Internet", "category": "FIXED_WIRELESS", "network_generation": "5G", "five_g_enabled": true, "monthly_price_eur": 39.9, "description": "Fixed wireless access over 5G with indoor gateway."},
+  {"product_id": "IOT-NB", "name": "NB-IoT Connectivity", "category": "IOT", "network_generation": "NB-IOT", "five_g_enabled": false, "monthly_price_eur": 1.5, "description": "Per-SIM narrowband IoT connectivity for sensors."},
+  {"product_id": "TV-BASIC", "name": "IPTV Basic", "category": "TV", "network_generation": "FIBER", "five_g_enabled": false, "monthly_price_eur": 19.9, "description": "IPTV with 40 channels and 7-day catch-up."},
+  {"product_id": "ROAM-EU", "name": "EU Roaming Pack", "category": "ADD_ON", "network_generation": "N/A", "five_g_enabled": false, "monthly_price_eur": 5.0, "description": "Additional 30 GB EU/EEA roaming data."},
+  {"product_id": "BIZ-SDWAN", "name": "Business SD-WAN", "category": "BUSINESS", "network_generation": "FIBER", "five_g_enabled": false, "monthly_price_eur": 249.0, "description": "Managed SD-WAN with 4h restoration SLA and 5G backup option."}
+]

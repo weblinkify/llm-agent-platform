@@ -1,0 +1,8 @@
+[
+  {"location": "Helsinki", "sites": 142, "technologies": ["5G", "4G", "FIBER"]},
+  {"location": "Espoo", "sites": 88, "technologies": ["5G", "4G", "FIBER"]},
+  {"location": "Tampere", "sites": 76, "technologies": ["5G", "4G", "FIBER"]},
+  {"location": "Turku", "sites": 61, "technologies": ["5G", "4G", "FIBER"]},
+  {"location": "Oulu", "sites": 54, "technologies": ["5G", "4G", "FIBER", "NB-IOT"]},
+  {"location": "Vantaa", "sites": 49, "technologies": ["5G", "4G", "FIBER"]}
+]

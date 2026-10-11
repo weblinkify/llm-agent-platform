@@ -1,0 +1,51 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 840 >>
+stream
+BT
+/F1 11 Tf
+14 TL
+50 790 Td
+(Radio Vendor Maintenance Contract Summary \(DOC-031\)) Tj T*
+() Tj T*
+(Scope: 5G and 4G radio access network equipment and gNodeB software.) Tj T*
+() Tj T*
+(Vendor response times: Critical faults \(P1\) - vendor engineer engaged within) Tj T*
+(30 minutes, workaround within 4 hours. Major faults \(P2\) - engaged within 2 hours.) Tj T*
+() Tj T*
+(Software defects: the vendor provides emergency patches for critical software) Tj T*
+(defects within 72 hours. Rollback to the previous software release is supported) Tj T*
+(for 30 days after an upgrade.) Tj T*
+() Tj T*
+(Spare parts: replacement radio units are delivered within 8 hours in Helsinki,) Tj T*
+(Espoo and Vantaa, and within 24 hours elsewhere in Finland.) Tj T*
+() Tj T*
+(Escalation: vendor tickets are opened only by L3 Network Engineering.) Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001132 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1202
+%%EOF
