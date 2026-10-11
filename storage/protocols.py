@@ -1,0 +1,19 @@
+from typing import Protocol
+
+from storage.models import Approval, ApprovalStatus, AuditEvent
+
+
+class AuditLog(Protocol):
+    async def write(self, event: AuditEvent) -> None: ...
+
+    async def list(self, limit: int = 100, request_id: str | None = None) -> list[AuditEvent]: ...
+
+
+class ApprovalStore(Protocol):
+    async def create(self, approval: Approval) -> Approval: ...
+
+    async def get(self, approval_id: str) -> Approval | None: ...
+
+    async def list(self, status: ApprovalStatus | None = None) -> list[Approval]: ...
+
+    async def save(self, approval: Approval) -> None: ...
