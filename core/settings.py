@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     llm_provider: LLMProviderName = "mock"
     llm_model: str = ""
     llm_temperature: float = 0.0
+    mock_token_delay_ms: int = Field(
+        default=0, description="Simulated per-token pacing for mock streaming in the demo UI."
+    )
     openai_api_key: str = ""
     anthropic_api_key: str = ""
     azure_openai_endpoint: str = ""

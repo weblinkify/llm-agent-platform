@@ -6,6 +6,7 @@ documents, with their IDs), summaries return the agent's fact-based draft, and
 action plans are parsed with regular expressions.
 """
 
+import asyncio
 import re
 from typing import cast
 
@@ -135,6 +136,9 @@ class MockLLM:
     provider = "mock"
     model = "mock-extractive-v1"
 
+    def __init__(self, token_delay_ms: int = 0) -> None:
+        self.token_delay = token_delay_ms / 1000
+
     def _usage(self, prompt: str, output: str) -> Usage:
         return Usage(
             self.provider,
@@ -161,6 +165,8 @@ class MockLLM:
         if on_token:
             for word in re.findall(r"\S+\s*", text):
                 await on_token(word)
+                if self.token_delay:
+                    await asyncio.sleep(self.token_delay)
         return LLMResult(text=text, usage=self._usage(system + prompt, text))
 
     async def structured(

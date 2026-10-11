@@ -12,7 +12,7 @@ DEFAULT_MODELS = {
 def create_llm(settings: Settings) -> LLMProvider:
     provider = settings.llm_provider
     if provider == "mock":
-        return MockLLM()
+        return MockLLM(settings.mock_token_delay_ms)
     if provider == "openai":
         from langchain_openai import ChatOpenAI
 
