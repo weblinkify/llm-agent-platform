@@ -1,0 +1,13 @@
+.venv
+.git
+.github
+apps/frontend
+docs
+tests
+infrastructure
+scripts
+evals/results*
+**/__pycache__
+**/node_modules
+*.egg-info
+AUDIT.md
