@@ -60,6 +60,7 @@ async def test_traced_llm_accumulates_request_usage() -> None:
 
 @pytest.mark.parametrize("provider", ["openai", "azure_openai", "anthropic"])
 def test_factory_builds_real_providers(settings: Settings, provider: str) -> None:
+    pytest.importorskip("langchain_anthropic" if provider == "anthropic" else "langchain_openai")
     configured = settings.model_copy(
         update={
             "llm_provider": provider,
