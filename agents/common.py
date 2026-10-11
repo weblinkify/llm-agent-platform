@@ -20,7 +20,7 @@ def citation(hit: dict[str, Any], cited_ids: set[str] | None = None) -> dict[str
         "chunk_id": hit["chunk_id"],
         "title": hit["title"],
         "section": hit["section"],
-        "snippet": hit["text"][:400],
+        "snippet": hit["text"],
         "similarity": hit["similarity"],
         "cited": cited_ids is None or hit["doc_id"] in cited_ids,
     }

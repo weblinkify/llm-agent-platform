@@ -39,11 +39,17 @@ _ACTION = (
 _LIVE_INCIDENT = re.compile(
     r"\binc-\d{4}\b"
     r"|\b(active|current|ongoing|right now|currently|affecting)\b.*\b(incident|outage|network)"
-    r"|\b(incident|outage|network)s?\b.*\b(active|affecting|in [A-Z]|right now|today)\b"
+    r"|\b(incident|outage|network)s?\b.*\b(active|affecting|right now|today)\b"
+    r"|\b(incident|outage|network)s?\b.*\bin (helsinki|espoo|vantaa|tampere|turku|oulu)\b"
     r"|\bnetwork status\b|\bis the network\b",
     re.I,
 )
 _KNOWLEDGE = (
+    "what happens",
+    "which channel",
+    "what should",
+    "major outage",
+    "communicat",
     "sla",
     "policy",
     "procedure",
